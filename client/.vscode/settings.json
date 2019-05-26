@@ -1,0 +1,51 @@
+{
+   "files.exclude": {
+      "/.git": true,
+      "/.DS_Store": true,
+      "**/node_modules": true,
+      "**/coverage": true
+   },
+   "search.exclude": {
+      "**/node_modules": true,
+      "**/.jest-cache": true
+   },
+   "eslint.enable": true,
+   "eslint.validate": [
+      "javascript",
+      "javascriptreact",
+      {
+         "language": "typescriptreact",
+         "autoFix": true
+      },
+      {
+         "language": "typescript",
+         "autoFix": true
+      }
+   ],
+   "typescript.tsdk": "./node_modules/typescript/lib",
+   "beautify.tabSize": 3,
+   "sfmt.insize": 3,
+   "multiCommand.commands": [
+      {
+         "command": "multiCommand.formatAndFix",
+         "interval": 50,
+         "sequence": [
+            "editor.action.formatDocument",
+            // "tslint.fixAllProblems",
+            "eslint.executeAutofix"
+         ]
+      }
+   ],
+   "todohighlight.keywords": [
+      {
+         "text": "HYBRID:",
+         "color": "white",
+         "backgroundColor": "teal"
+      },
+      {
+         "text": "IE11:",
+         "color": "white",
+         "backgroundColor": "red"
+      },
+   ]
+}

@@ -1,0 +1,11 @@
+{
+  "scripts": {
+    "start": "concurrently \"cd server && npm start\" \"cd client && npm start\" \"cd server && mongod --dbpath db/\"",
+    "install-all": "concurrently \"npm install\" \"cd server && npm install\" \"cd client && npm install\""
+  },
+  "author": "Marcin Gajda",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^4.1.0"
+  }
+}
