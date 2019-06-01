@@ -1,6 +1,6 @@
 import { Router, Response, Request } from 'express';
 import { Controller } from './Controller';
-import userModel from '../Models/UserModel';
+import userModel from '../Models/User.model';
 
 export class User extends Controller {
   public routePath: string;
@@ -9,29 +9,15 @@ export class User extends Controller {
   constructor() {
     super('/login');
 
-    this.login()
-      .update()
-      .remove()
-      .register();
+    this.initializeRoute();
   }
 
-  public login = () => {
-    this.router.get(this.routePath, this.checkUserExists);
-    return this;
-  }
-
-  public register = () => {
-    this.router.post(this.routePath, this.addNewUser);
-    return this;
-  }
-
-  public update = () => {
-    this.router.put(this.routePath, this.updateUserPassword);
-    return this;
-  }
-
-  public remove = () => {
-    this.router.delete(this.routePath, this.removeUser);
+  public initializeRoute = () => {
+    this.router
+      .post(this.routePath, this.checkUserExists)
+      // .post(this.routePath, this.addNewUser)
+      .put(this.routePath, this.updateUserPassword)
+      .delete(this.routePath, this.removeUser);
     return this;
   }
 
@@ -54,7 +40,7 @@ export class User extends Controller {
     const foundUser = await userModel.findOne(user);
 
     if (foundUser) {
-      res.status(400).send({ login: true });
+      res.status(200).send({ login: true, name: user.user, id: foundUser._id });
     } else {
       res.status(400).send({ login: false });
     }

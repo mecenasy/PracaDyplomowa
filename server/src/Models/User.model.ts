@@ -1,6 +1,6 @@
 import * as mongouse from 'mongoose';
 
-interface IUser extends mongouse.Document{
+interface IUser extends mongouse.Document {
   user: string;
   password: string;
   isDefaultPassword?: boolean;

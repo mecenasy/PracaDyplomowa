@@ -1,7 +1,7 @@
 import React from 'react';
-import { createStore, Store, applyMiddleware, StoreEnhancer } from 'redux'
+import { createStore, Store, applyMiddleware, StoreEnhancer, compose } from 'redux'
 import { rootReducer } from './store/rootReducer';
-import { ApplicationState, ApplicationAction } from './store/constance';
+import { ApplicationState, ApplicationAction } from './store/constants';
 import { Provider } from 'react-redux';
 import createSagaMiddleware, { SagaMiddleware } from 'redux-saga';
 import { rootSaga } from './store/rootSaga';
@@ -11,9 +11,17 @@ import { ThemeProvider } from 'styled-components';
 
 const sagaMiddleware: SagaMiddleware = createSagaMiddleware();
 
-const middleware: StoreEnhancer = applyMiddleware(sagaMiddleware)
+const windowIfDefined = typeof window === 'undefined'
+  ? null
+  : window as Window & { __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: (a: any) => any };
 
-const store: Store<ApplicationState, ApplicationAction> = createStore(rootReducer, {}, middleware);
+const composeEnhancers = (windowIfDefined && windowIfDefined.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;
+
+const middleware: StoreEnhancer = applyMiddleware(sagaMiddleware);
+
+const composedMiddlewares = composeEnhancers(middleware as any);
+
+const store: Store<ApplicationState, ApplicationAction> = createStore(rootReducer, {}, composedMiddlewares);
 
 sagaMiddleware.run(rootSaga);
 
