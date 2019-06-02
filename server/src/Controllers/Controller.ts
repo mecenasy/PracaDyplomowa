@@ -1,4 +1,4 @@
-import { IController } from 'Interface/Controller';
+import { IController } from '../Interface/Controller';
 import * as express from 'express';
 
 export abstract class Controller implements IController {
