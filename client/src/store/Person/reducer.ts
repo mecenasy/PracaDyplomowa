@@ -12,6 +12,7 @@ const initialState: Person = {
   group: '',
   name: '',
   surname: '',
+  photo:'',
 };
 
 export const personReducer = (state: Person = initialState, action: PersonAction): Person => {

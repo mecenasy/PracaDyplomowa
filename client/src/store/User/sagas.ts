@@ -9,6 +9,7 @@ import { getPersonWorker } from '../Person/sagas';
 export function* loginUserWatcher() {
   yield takeLatest<UserAction>(UserActionType.LoginUserRequest, loginUserWorker);
 }
+
 export function* loginUserWorker(action: UserAction) {
   if (action.type === UserActionType.LoginUserRequest) {
     const { user, password } = action;

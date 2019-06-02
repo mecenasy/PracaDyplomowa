@@ -14,10 +14,6 @@ export default class App {
     });
   }
 
-  public getExpressServer() {
-    return this.app;
-  }
-
   public listen() {
     this.app.listen(this.port, () => {
       console.log('Server started on port 3001');
@@ -32,6 +28,12 @@ export default class App {
     return App.instance;
   }
 
+  public getRootPath() {
+    const path = __dirname.split('\\');
+    return path.splice(0, path.length - 1).join('\\');
+
+  }
+
   private static instance: App = null;
 
   private app: express.Application;
@@ -43,7 +45,17 @@ export default class App {
     this.app = express();
 
     this.initializeMiddleware();
+    this.initializeStatic();
     this.connectToDataBase();
+  }
+
+  private initializeStatic() {
+    this.app.use(
+      '/files',
+      express.static(
+        this.getRootPath() + '\\files',
+      ),
+    );
   }
 
   private initializeMiddleware() {

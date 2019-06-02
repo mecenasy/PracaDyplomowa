@@ -40,18 +40,21 @@ export class Person extends Controller {
 
     await newPerson.save();
     await newUser.save();
-    res.send({ newPerson, newUser }).status(201);
+    res.status(201).send({ newPerson, newUser });
   }
 
   private getByUserId = async (req: Request, res: Response) => {
     const userId = req.params.userId;
 
     const person = await PersonModel.findOne({ userId });
+    const photoName = person.photo;
+    const d = 'http://localhost:3001/files/' + photoName;
+    person.photo = d;
     if (person) {
-      res.send(person).status(200);
+      res.status(200).send(person);
 
     } else {
-      res.send({ message: 'person not found' }).status(404);
+      res.status(404).send({ message: 'person not found' });
     }
   }
 

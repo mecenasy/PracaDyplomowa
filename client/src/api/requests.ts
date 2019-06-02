@@ -11,5 +11,3 @@ export const loginUser = (user: string, password: string) => {
     password,
   });
 };
-
-getPersonByUserId('5cf23bcbc0c84eea1c94d587').then(console.log)

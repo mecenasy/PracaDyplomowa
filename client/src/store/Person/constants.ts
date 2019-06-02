@@ -12,7 +12,7 @@ export interface Person {
   surname: string;
   email?: string;
   phone?: number;
-  photo?: string;
+  photo: string;
 }
 
 export enum PersonActionType {
