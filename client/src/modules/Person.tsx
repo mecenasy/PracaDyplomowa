@@ -1,10 +1,12 @@
 import React from 'react';
-import { OuterWrapper, Wrapper, Zdiecie, Content } from './parts';
+import {  Content } from './parts';
 import { MapStateToProps, MapDispatchToProps, connect } from 'react-redux';
 import { ApplicationState } from '../store/constants';
 import { getPersonRequest } from '../store/Person/actions';
 import { getPersonSelector } from '../store/Person/selectors';
-import PersonDataRow from './PersonDataRow';
+import PersonDataRow from './PersonDataRow/PersonDataRow';
+import BoxWithShadow from './BoxWithShadow/BoxWithShadow';
+import Photo from './Photo/Photo';
 
 export interface PersonStateProps {
   album: string;
@@ -34,12 +36,8 @@ class Person extends React.Component<PersonProps> {
 
   public render() {
     return (
-      <div style={{ padding: '20px' }}>
-        <OuterWrapper>
-          <Wrapper >
-            {/* // TODO naprawić zdięcie*/}
-            <img src={this.props.photo} />
-          </Wrapper>
+        <BoxWithShadow>
+          <Photo src={this.props.photo} />
           <Content>
             <PersonDataRow title={'Album:'} data={this.props.album} />
             <PersonDataRow title={'Kierunek:'} data={this.props.direction} />
@@ -49,8 +47,7 @@ class Person extends React.Component<PersonProps> {
             <PersonDataRow title={'Semestr:'} data={this.props.semester} />
             <PersonDataRow title={'Grupa:'} data={this.props.group} />
           </Content>
-        </OuterWrapper>
-      </div>
+        </BoxWithShadow>
     );
   }
 }

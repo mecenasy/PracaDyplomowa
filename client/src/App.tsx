@@ -9,6 +9,7 @@ import { createBrowserHistory, History } from 'history';
 import { Router, Switch, Route } from 'react-router';
 import { ThemeProvider } from 'styled-components';
 import Person from './modules/Person';
+import Login from './modules/Login/Login';
 
 const sagaMiddleware: SagaMiddleware = createSagaMiddleware();
 
@@ -38,8 +39,16 @@ const App: FC = () => {
     <Provider store={store}>
       <ThemeProvider theme={gridConfig} >
         <Router history={history}>
+          <div style={{ padding: '20px' }}>
+            <Login alertMassage={''}/>
+            <Person />
+            <Person />
+            <Person />
+            <Person />
+            <Person />
+          </div>
+          {/* <Route path={'/'} component={Person} /> */}
           <Switch>
-            <Route path={'/'} component={Person} />
           </Switch>
         </Router>
       </ThemeProvider>
