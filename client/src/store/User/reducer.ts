@@ -1,7 +1,7 @@
 import { UserAction, User, UserActionType } from "./constants";
 
 const initialState: User = {
-  id: '',
+  userId: '',
   name: '',
   role: '',
 };

@@ -8,6 +8,6 @@ export class ConnectToMongoDB {
   }
 
   private connectToDataBase() {
-    mongoose.connect(`mongodb://${this.server}/${this.data}`);
+    mongoose.connect(`mongodb://${this.server}/${this.data}`, { useNewUrlParser: true });
   }
 }

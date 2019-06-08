@@ -1,13 +1,14 @@
 import { Router, Response, Request } from 'express';
+import * as jct from 'jsonwebtoken';
+import * as passport from 'passport';
 import { Controller } from './Controller';
 import userModel from '../Models/User.model';
 import userRoleModel from '../Models/Role.model';
-import * as passport from 'passport';
-
+import personModel from '../Models/Person.model';
 export class User extends Controller {
   public routePath: string;
   public router: Router;
-
+  secret = 'mysecretsshhh';
   constructor() {
     super('/login');
 
@@ -41,18 +42,26 @@ export class User extends Controller {
       if (err) {
         return next(err);
       }
-      if (!user) { return res.redirect('/login'); }
+      if (!user) {
+        return res.redirect('/login');
+      }
       req.logIn(user, async (err) => {
         if (err) {
           return next(err);
         }
         const role = await userRoleModel.findOne(user.role);
-        return res.status(200).send({
-          login: true,
-          name: user.user,
-          id: user._id,
-          role: role.role,
+        const payload = { user };
+        const token = jct.sign(payload, this.secret, {
+          expiresIn: '1h',
         });
+        res.status(200)
+          .cookie('token', token, { httpOnly: true })
+          .send({
+            login: true,
+            name: user.user,
+            userId: user.personId,
+            role: role.role,
+          });
       });
     })(req, res, next);
   }

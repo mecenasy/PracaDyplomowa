@@ -10,6 +10,7 @@ export function* getPersonWatcher() {
 export function* getPersonWorker(action: PersonAction) {
   const { userId } = action;
   try {
+    console.log("TCL: function*getPersonWorker -> data", userId)
     const data: { data: Person } = yield call(getPersonByUserId, userId);
 
     yield put(getPersonSuccess(userId, data.data));

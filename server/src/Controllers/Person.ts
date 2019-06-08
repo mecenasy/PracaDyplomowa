@@ -40,8 +40,7 @@ export class Person extends Controller {
       user: userName,
       isDefaultPassword: true,
     });
-
-    newPerson.userId = newUser;
+    newUser.personId = newPerson,
 
     bcrypt.genSalt(10, (err, salt) => {
       return bcrypt.hash('123456789', salt, (err, hash) => {
@@ -58,7 +57,7 @@ export class Person extends Controller {
   private getByUserId = async (req: Request, res: Response) => {
     const userId = req.params.userId;
 
-    const person = await PersonModel.findOne({ userId });
+    const person = await PersonModel.findById( userId );
     const photoName = person.photo;
     const d = 'http://localhost:3001/files/' + photoName;
     person.photo = d;
