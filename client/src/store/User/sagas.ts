@@ -15,12 +15,14 @@ export function* loginUserWorker(action: UserAction) {
     const { user, password } = action;
     try {
       const { data }: { data: User } = yield call(loginUser, user, password);
+      console.log("TCL: function*loginUserWorker -> data", data)
 
       yield call(getPersonWorker, getPersonRequest(data.id));
 
       yield put(loginUserSuccess(data));
 
     } catch (error) {
+      console.log("TCL: function*loginUserWorker -> error", error.response.data)
       yield put(loginUserFail('undefined', 'undefined'));
     }
   }

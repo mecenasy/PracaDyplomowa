@@ -2,6 +2,7 @@ import * as mongouse from 'mongoose';
 
 export interface IPerson extends mongouse.Document {
   userId?: any;
+  personId?: any;
   album: number;
   direction: string;
   department: string;
@@ -14,6 +15,7 @@ export interface IPerson extends mongouse.Document {
   email: string;
   phone: number;
   photo: string;
+  role?: string;
 }
 
 const personSchema = new mongouse.Schema({

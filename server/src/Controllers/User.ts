@@ -1,6 +1,8 @@
 import { Router, Response, Request } from 'express';
 import { Controller } from './Controller';
 import userModel from '../Models/User.model';
+import userRoleModel from '../Models/Role.model';
+import * as passport from 'passport';
 
 export class User extends Controller {
   public routePath: string;
@@ -34,16 +36,25 @@ export class User extends Controller {
     }
   }
 
-  private checkUserExists = async (req: Request, res: Response) => {
-    const user = req.body;
-
-    const foundUser = await userModel.findOne(user);
-
-    if (foundUser) {
-      res.status(200).send({ login: true, name: user.user, id: foundUser._id });
-    } else {
-      res.status(400).send({ login: false });
-    }
+  private checkUserExists = async (req: Request, res: Response, next: any) => {
+    passport.authenticate('local', async (err, user, info) => {
+      if (err) {
+        return next(err);
+      }
+      if (!user) { return res.redirect('/login'); }
+      req.logIn(user, async (err) => {
+        if (err) {
+          return next(err);
+        }
+        const role = await userRoleModel.findOne(user.role);
+        return res.status(200).send({
+          login: true,
+          name: user.user,
+          id: user._id,
+          role: role.role,
+        });
+      });
+    })(req, res, next);
   }
 
   private removeUser = async (req: Request, res: Response) => {

@@ -3,6 +3,9 @@ import * as  bodyParser from 'body-parser';
 import { IController } from './Interface/Controller';
 import { ConnectToMongoDB } from './DataBase/MongoDB';
 import * as cors from 'cors';
+import * as session from 'express-session';
+import * as passport from 'passport';
+import passportConfig from './Passport/PassportConfig';
 
 export default class App {
   public setController(controller: IController) {
@@ -32,9 +35,24 @@ export default class App {
   public getRootPath() {
     const path = __dirname.split('\\');
     return path.splice(0, path.length - 1).join('\\');
-
   }
 
+  private setCorse = () => {
+    this.app.use(cors())
+    this.app.options('*', cors());
+    return this;
+  }
+
+  private setSession = () => {
+    this.app.use(session({
+      secret: 'secred',
+      resave: true,
+      saveUninitialized: true,
+      cookie: { secure: true },
+    }));
+    return this;
+
+  }
   private static instance: App = null;
 
   private app: express.Application;
@@ -44,11 +62,19 @@ export default class App {
   private constructor(port: number) {
     this.port = port;
     this.app = express();
-    this.app.use(cors())
-    this.app.options('*', cors());
-    this.initializeMiddleware();
-    this.initializeStatic();
-    this.connectToDataBase();
+    this.setCorse()
+      .setSession()
+      .initilizePassport()
+      .initializeMiddleware()
+      .initializeStatic()
+      .connectToDataBase();
+  }
+
+  private initilizePassport() {
+    passportConfig(passport);
+    this.app.use(passport.initialize());
+    this.app.use(passport.session());
+    return this;
   }
 
   private initializeStatic() {
@@ -58,10 +84,12 @@ export default class App {
         this.getRootPath() + '\\files',
       ),
     );
+    return this;
   }
 
   private initializeMiddleware() {
     this.app.use(bodyParser.json());
+    return this;
   }
 
   private connectToDataBase() {

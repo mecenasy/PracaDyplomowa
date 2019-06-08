@@ -2,6 +2,8 @@ import { Router, Response, Request } from 'express';
 import { Controller } from './Controller';
 import UserModel from '../Models/User.model';
 import PersonModel, { IPerson } from '../Models/Person.model';
+import UserRoleModel from '../Models/Role.model';
+import * as bcrypt from 'bcrypt';
 
 export class Person extends Controller {
   public routePath: string;
@@ -22,7 +24,7 @@ export class Person extends Controller {
 
   private addPerson = async (req: Request, res: Response) => {
     const person: IPerson = req.body;
-    const user = (person.name.slice(0, 2) + person.surname).toLocaleLowerCase();
+    const user = (person.name.slice(0, 3) + person.surname).toLocaleLowerCase();
 
     const existingUser = await UserModel.find({ user });
     let userName = user;
@@ -30,16 +32,26 @@ export class Person extends Controller {
     if (existingUser && existingUser.length) {
       userName = `${user}${existingUser.length + 1}`;
     }
+    const role = await UserRoleModel.findOne({ role: person.role });
+
+    const newPerson = new PersonModel(person);
     const newUser = new UserModel({
+      role,
       user: userName,
-      password: '123456789',
       isDefaultPassword: true,
     });
-    const newPerson = new PersonModel(person);
+
     newPerson.userId = newUser;
 
-    await newPerson.save();
+    bcrypt.genSalt(10, (err, salt) => {
+      return bcrypt.hash('123456789', salt, (err, hash) => {
+        newUser.password = hash;
+        newUser.save();
+      });
+    });
+
     await newUser.save();
+    await newPerson.save();
     res.status(201).send({ newPerson, newUser });
   }
 
