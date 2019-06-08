@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import BoxWithShadowBase from '../BoxWithShadow/BoxWithShadow';
+import BoxWithShadowBase from '../SimpleComponents/BoxWithShadow/BoxWithShadow';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 

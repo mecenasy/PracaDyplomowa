@@ -4,15 +4,17 @@ import Input1 from '../SimpleComponents/Input/Input';
 import * as P from './parts';
 import { Field, Form, } from 'react-final-form';
 import { validateLoginForm, hasWrapperError } from './helpers';
+import { MapDispatchToProps, MapStateToProps, connect } from 'react-redux';
+import { ApplicationState } from '../../store/constants';
+import { loginUserRequest } from '../../store/User/actions';
+import {  LoginProps, LoginAction } from './types';
 
-interface LoginProps {
-  alertMassage: string;
-}
-
-const Login: FC<LoginProps> = ({
+const Login: FC<LoginProps & LoginAction> = ({
   alertMassage,
+  onLogin,
 }) => {
   const onSubmit = (e: any) => {
+    onLogin(e.user, e.password);
     console.log(e);
   };
 
@@ -63,4 +65,14 @@ const Login: FC<LoginProps> = ({
   );
 };
 
-export default Login;
+const mapStateToProps: MapStateToProps<LoginProps, {}, ApplicationState> = (store) => ({
+  alertMassage: '',
+});
+
+const mapDispatchToProps: MapDispatchToProps<LoginAction, {}> = (dispatch) => ({
+  onLogin: (user: string, password: string) => {
+    dispatch(loginUserRequest(user, password));
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

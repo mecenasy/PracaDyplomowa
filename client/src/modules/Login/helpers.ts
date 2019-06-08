@@ -1,8 +1,8 @@
 import { FieldRenderProps } from "react-final-form";
 import { UserData } from "./types";
 
-export const validateLoginForm = (value: UserData) => {
-  const error: UserData = {};
+export const validateLoginForm = (value: any) => {
+  const error: Partial<UserData> = {};
   if (!value.user) {
     error.user = 'musisz podać login';
   }

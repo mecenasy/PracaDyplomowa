@@ -2,6 +2,7 @@ import * as express from 'express';
 import * as  bodyParser from 'body-parser';
 import { IController } from './Interface/Controller';
 import { ConnectToMongoDB } from './DataBase/MongoDB';
+import * as cors from 'cors';
 
 export default class App {
   public setController(controller: IController) {
@@ -16,7 +17,7 @@ export default class App {
 
   public listen() {
     this.app.listen(this.port, () => {
-      console.log('Server started on port 3001');
+      console.log('Server started on port');
     });
   }
 
@@ -24,7 +25,7 @@ export default class App {
     if (App.instance) {
       return App.instance;
     }
-    App.instance = new App(3001);
+    App.instance = new App(3005);
     return App.instance;
   }
 
@@ -43,7 +44,8 @@ export default class App {
   private constructor(port: number) {
     this.port = port;
     this.app = express();
-
+    this.app.use(cors())
+    this.app.options('*', cors());
     this.initializeMiddleware();
     this.initializeStatic();
     this.connectToDataBase();

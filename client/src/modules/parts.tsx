@@ -1,4 +1,9 @@
 import styled from 'styled-components';
+import BoxWithShadowBase from './SimpleComponents/BoxWithShadow/BoxWithShadow';
+
+export const BoxWithShadow = styled(BoxWithShadowBase)`
+  height: 180px;
+`;
 
 export const Wrapper = styled.div`
   box-shadow: 0 0 6px 0 gray;

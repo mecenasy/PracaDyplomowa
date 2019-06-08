@@ -1,11 +1,10 @@
 import React from 'react';
-import {  Content } from './parts';
+import { Content, BoxWithShadow } from './parts';
 import { MapStateToProps, MapDispatchToProps, connect } from 'react-redux';
 import { ApplicationState } from '../store/constants';
 import { getPersonRequest } from '../store/Person/actions';
 import { getPersonSelector } from '../store/Person/selectors';
 import PersonDataRow from './PersonDataRow/PersonDataRow';
-import BoxWithShadow from './BoxWithShadow/BoxWithShadow';
 import Photo from './Photo/Photo';
 
 export interface PersonStateProps {
@@ -36,18 +35,18 @@ class Person extends React.Component<PersonProps> {
 
   public render() {
     return (
-        <BoxWithShadow>
-          <Photo src={this.props.photo} />
-          <Content>
-            <PersonDataRow title={'Album:'} data={this.props.album} />
-            <PersonDataRow title={'Kierunek:'} data={this.props.direction} />
-            <PersonDataRow title={'Wydział:'} data={this.props.department} />
-            <PersonDataRow title={'Specjalność:'} data={this.props.specialty} />
-            <PersonDataRow title={'Rok:'} data={this.props.year} />
-            <PersonDataRow title={'Semestr:'} data={this.props.semester} />
-            <PersonDataRow title={'Grupa:'} data={this.props.group} />
-          </Content>
-        </BoxWithShadow>
+      <BoxWithShadow>
+        <Photo src={this.props.photo} />
+        <Content>
+          <PersonDataRow title={'Album:'} data={this.props.album} />
+          <PersonDataRow title={'Kierunek:'} data={this.props.direction} />
+          <PersonDataRow title={'Wydział:'} data={this.props.department} />
+          <PersonDataRow title={'Specjalność:'} data={this.props.specialty} />
+          <PersonDataRow title={'Rok:'} data={this.props.year} />
+          <PersonDataRow title={'Semestr:'} data={this.props.semester} />
+          <PersonDataRow title={'Grupa:'} data={this.props.group} />
+        </Content>
+      </BoxWithShadow>
     );
   }
 }

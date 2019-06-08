@@ -1,54 +1,29 @@
 import React, { FC } from 'react';
-import { createStore, Store, applyMiddleware, StoreEnhancer, compose } from 'redux';
-import { rootReducer } from './store/rootReducer';
-import { ApplicationState, ApplicationAction } from './store/constants';
 import { Provider } from 'react-redux';
-import createSagaMiddleware, { SagaMiddleware } from 'redux-saga';
-import { rootSaga } from './store/rootSaga';
-import { createBrowserHistory, History } from 'history';
 import { Router, Switch, Route } from 'react-router';
 import { ThemeProvider } from 'styled-components';
 import Person from './modules/Person';
-import Login from './modules/Login/Login';
-
-const sagaMiddleware: SagaMiddleware = createSagaMiddleware();
-
-const windowIfDefined = typeof window === 'undefined'
-  ? null
-  : window as Window & { __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: (a: any) => any };
-
-const composeEnhancers = (windowIfDefined && windowIfDefined.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;
-
-const middleware: StoreEnhancer = applyMiddleware(sagaMiddleware);
-
-const composedMiddlewares = composeEnhancers(middleware as any);
-
-const store: Store<ApplicationState, ApplicationAction> = createStore(rootReducer, {}, composedMiddlewares);
-
-sagaMiddleware.run(rootSaga);
-
-const history: History = createBrowserHistory();
-
-export const gridConfig = {
-  space: [0, 4, 8, 16, 24, 32, 48],
-  breakpoints: [520, 720, 900, 1080, 999999],
-};
+import login from './modules/Login/Login';
+import { store, gridConfig, history } from './store/configureStore';
 
 const App: FC = () => {
   return (
     <Provider store={store}>
       <ThemeProvider theme={gridConfig} >
         <Router history={history}>
-          <div style={{ padding: '20px' }}>
-            <Login alertMassage={''}/>
+          {/* <div style={{ padding: '20px' }}>
+            <Login alertMassage={''} />
+          </div> */}
+          {/* <Person />
             <Person />
             <Person />
             <Person />
-            <Person />
-            <Person />
-          </div>
-          {/* <Route path={'/'} component={Person} /> */}
+          <Person /> */}
           <Switch>
+            <div style={{ padding: '20px' }}>
+              <Route path={'/'} component={login} />
+              <Route path={'/person'} component={Person} />
+            </div>
           </Switch>
         </Router>
       </ThemeProvider>

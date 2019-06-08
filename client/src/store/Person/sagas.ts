@@ -10,9 +10,9 @@ export function* getPersonWatcher() {
 export function* getPersonWorker(action: PersonAction) {
   const { userId } = action;
   try {
-    const { data }: { data: Person } = yield call(getPersonByUserId, userId);
+    const data: { data: Person } = yield call(getPersonByUserId, userId);
 
-    yield put(getPersonSuccess(userId, data));
+    yield put(getPersonSuccess(userId, data.data));
 
   } catch (error) {
     yield put(getPersonFail(userId, 'undefined'));

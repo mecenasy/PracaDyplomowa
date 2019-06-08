@@ -4,7 +4,6 @@ export const Box = styled.div`
   display: flex;
   align-items: flex-start;
   padding: 8px;
-  height: 180px;
   width: 100%;
   border: 1px solid grey;
   border-radius: 6px;
