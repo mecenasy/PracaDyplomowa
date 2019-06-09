@@ -23,7 +23,6 @@
     "member-ordering": false,
     "ordered-imports": false,
     "interfaceName": false
-
   },
   "rulesDirectory": [],
   "indent": [

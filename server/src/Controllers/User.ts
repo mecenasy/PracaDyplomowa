@@ -4,11 +4,10 @@ import * as passport from 'passport';
 import { Controller } from './Controller';
 import userModel from '../Models/User.model';
 import userRoleModel from '../Models/Role.model';
-import personModel from '../Models/Person.model';
+import Cookie from '../Auth/Cookie';
 export class User extends Controller {
   public routePath: string;
   public router: Router;
-  secret = 'mysecretsshhh';
   constructor() {
     super('/login');
 
@@ -43,17 +42,20 @@ export class User extends Controller {
         return next(err);
       }
       if (!user) {
-        return res.redirect('/login');
+        res.status(400)
+          .send({
+            login: false,
+            name: user.user,
+            message: 'unregistred',
+          });
       }
       req.logIn(user, async (err) => {
         if (err) {
           return next(err);
         }
         const role = await userRoleModel.findOne(user.role);
-        const payload = { user };
-        const token = jct.sign(payload, this.secret, {
-          expiresIn: '1h',
-        });
+        const token = new Cookie({ user }).getCookieToken();
+
         res.status(200)
           .cookie('token', token, { httpOnly: true })
           .send({
@@ -79,6 +81,7 @@ export class User extends Controller {
   }
 
   private updateUserPassword = async (req: Request, res: Response) => {
+    // TODO: update for autentication
     const user = req.body.user;
     const password = req.body.password;
     const newPassword = req.body.newPassword;

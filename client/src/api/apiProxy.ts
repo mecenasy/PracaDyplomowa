@@ -1,9 +1,12 @@
 import axios from 'axios';
-import * as apiConfig from './apiConfig';
+import { basePath, authorizationHeaders } from './apiConfig';
 
 const axiosInstance = axios.create({
   responseType: 'json',
-  baseURL: apiConfig.basePath,
+  baseURL: basePath,
+  headers: {
+    ...authorizationHeaders,
+  },
 });
 
 export default axiosInstance;

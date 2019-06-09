@@ -1,9 +1,11 @@
 import { Router, Response, Request } from 'express';
+import * as bcrypt from 'bcrypt';
 import { Controller } from './Controller';
-import UserModel from '../Models/User.model';
+import UserModel, { IUser } from '../Models/User.model';
 import PersonModel, { IPerson } from '../Models/Person.model';
 import UserRoleModel from '../Models/Role.model';
-import * as bcrypt from 'bcrypt';
+import Crypto from '../Auth/Crypto';
+import Cookie from '../Auth/Cookie';
 
 export class Person extends Controller {
   public routePath: string;
@@ -17,7 +19,7 @@ export class Person extends Controller {
 
   public initializeRoute = () => {
     this.router
-      .get(this.routePath + '/:userId', this.getByUserId)
+      .get(this.routePath + '/:userId', Cookie.withAuth, this.getByUserId)
       .post(this.routePath, this.addPerson);
     return this;
   }
@@ -25,14 +27,14 @@ export class Person extends Controller {
   private addPerson = async (req: Request, res: Response) => {
     const person: IPerson = req.body;
     const user = (person.name.slice(0, 3) + person.surname).toLocaleLowerCase();
+    let userName = user;
 
     const existingUser = await UserModel.find({ user });
-    let userName = user;
+    const role = await UserRoleModel.findOne({ role: person.role });
 
     if (existingUser && existingUser.length) {
       userName = `${user}${existingUser.length + 1}`;
     }
-    const role = await UserRoleModel.findOne({ role: person.role });
 
     const newPerson = new PersonModel(person);
     const newUser = new UserModel({
@@ -40,32 +42,35 @@ export class Person extends Controller {
       user: userName,
       isDefaultPassword: true,
     });
-    newUser.personId = newPerson,
+    newUser.personId = newPerson;
 
-    bcrypt.genSalt(10, (err, salt) => {
-      return bcrypt.hash('123456789', salt, (err, hash) => {
-        newUser.password = hash;
-        newUser.save();
-      });
-    });
+    const crypto = new Crypto('');
+
+    crypto.setDefaultPassword(this.setPasswordInUser(newUser));
+
 
     await newUser.save();
     await newPerson.save();
-    res.status(201).send({ newPerson, newUser });
+
+    res.status(201)
+      .send({ newPerson, newUser });
   }
 
   private getByUserId = async (req: Request, res: Response) => {
     const userId = req.params.userId;
 
-    const person = await PersonModel.findById( userId );
+    const person = await PersonModel.findById(userId);
     const photoName = person.photo;
-    const d = 'http://localhost:3001/files/' + photoName;
-    person.photo = d;
+    const photoLink = 'http://localhost:3001/files/' + photoName;
+    person.photo = photoLink;
+
     if (person) {
-      res.status(200).send(person);
+      res.status(200)
+        .send(person);
 
     } else {
-      res.status(404).send({ message: 'person not found' });
+      res.status(404)
+        .send({ message: 'person not found' });
     }
   }
 
@@ -76,6 +81,12 @@ export class Person extends Controller {
   private updatePersonById = async (req: Request, res: Response) => {
     throw new Error('no implemented yet');
   }
+
+  private setPasswordInUser = (user: IUser) =>
+    (err: Error, hash: string) => {
+      user.password = hash;
+      user.save();
+    }
 }
 
 export default Person;
