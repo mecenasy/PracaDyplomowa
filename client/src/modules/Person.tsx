@@ -1,13 +1,13 @@
 import React from 'react';
 import { Content, BoxWithShadow } from './parts';
-import { MapStateToProps, MapDispatchToProps, connect } from 'react-redux';
+import { MapStateToProps, connect } from 'react-redux';
 import { ApplicationState } from '../store/constants';
-import { getPersonRequest } from '../store/Person/actions';
 import { getPersonSelector } from '../store/Person/selectors';
 import PersonDataRow from './PersonDataRow/PersonDataRow';
 import Photo from './Photo/Photo';
+import { withCookies, ReactCookieProps } from 'react-cookie';
 
-export interface PersonStateProps {
+export interface PersonStateProps extends ReactCookieProps {
   album: string;
   direction: string;
   department: string;
@@ -19,7 +19,7 @@ export interface PersonStateProps {
 }
 
 interface PersonOwnProps {
-  personId?: string;
+  personId: string;
 }
 
 interface PersonAction {
@@ -29,11 +29,8 @@ interface PersonAction {
 type PersonProps = PersonOwnProps & PersonAction & PersonStateProps;
 
 class Person extends React.Component<PersonProps> {
-  public componentDidMount() {
-    this.props.getPerson();
-  }
-
   public render() {
+    console.log(this.props.allCookies);
     return (
       <BoxWithShadow>
         <Photo src={this.props.photo} />
@@ -54,10 +51,4 @@ class Person extends React.Component<PersonProps> {
 const mapStateToProps: MapStateToProps<PersonStateProps, {}, ApplicationState> =
   (state) => (getPersonSelector(state));
 
-const mapDispatchToProps: MapDispatchToProps<PersonAction, PersonOwnProps> = (dispatch, { personId }) => ({
-  getPerson: () => {
-    dispatch(getPersonRequest('5cf3ccfdf1a9ad4b104e08d2'));
-  },
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Person);
+export default connect(mapStateToProps)(withCookies(Person));

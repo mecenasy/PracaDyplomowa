@@ -16,8 +16,8 @@ export class User extends Controller {
 
   public initializeRoute = () => {
     this.router
-      .post(this.routePath, this.checkUserExists)
-      // .post(this.routePath, this.addNewUser)
+      .get('/logout', this.logout)
+      .post(this.routePath, this.login)
       .put(this.routePath, this.updateUserPassword)
       .delete(this.routePath, this.removeUser);
     return this;
@@ -36,7 +36,7 @@ export class User extends Controller {
     }
   }
 
-  private checkUserExists = async (req: Request, res: Response, next: any) => {
+  private login = async (req: Request, res: Response, next: any) => {
     passport.authenticate('local', async (err, user, info) => {
       if (err) {
         return next(err);
@@ -68,6 +68,15 @@ export class User extends Controller {
     })(req, res, next);
   }
 
+  private logout = async (req: Request, res: Response) => {
+    req.logOut();
+    res.clearCookie('token');
+    req.session.destroy((err) => {
+      res.status(200).send({
+        login: false,
+      });
+    });
+  }
   private removeUser = async (req: Request, res: Response) => {
     const user = req.body;
 

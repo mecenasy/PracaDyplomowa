@@ -21,3 +21,7 @@ export const loginUser = (user: string, password: string) => {
     { withCredentials: true }
   );
 };
+
+export const logoutUser = () => {
+  return req.get('/logout', { withCredentials: true })
+};

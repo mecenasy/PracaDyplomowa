@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 
 export const BoxWithShadow = styled(BoxWithShadowBase)`
+  margin: 200px auto;
   height: auto;
   width: 640px;
   padding: 32px;

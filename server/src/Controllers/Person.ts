@@ -60,11 +60,11 @@ export class Person extends Controller {
     const userId = req.params.userId;
 
     const person = await PersonModel.findById(userId);
-    const photoName = person.photo;
-    const photoLink = 'http://localhost:3001/files/' + photoName;
-    person.photo = photoLink;
 
     if (person) {
+      const photoName = person.photo;
+      const photoLink = 'http://localhost:3005/files/' + photoName;
+      person.photo = photoLink;
       res.status(200)
         .send(person);
 

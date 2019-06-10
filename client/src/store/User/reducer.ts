@@ -1,4 +1,4 @@
-import { UserAction, User, UserActionType } from "./constants";
+import { UserAction, User, UserActionType } from './constants';
 
 const initialState: User = {
   userId: '',
@@ -10,6 +10,9 @@ export const userReducer = (state: User = initialState, action: UserAction): Use
   switch (action.type) {
     case UserActionType.LoginUserSuccess: {
       return action.user;
+    }
+    case UserActionType.LogoutUserSuccess: {
+      return initialState;
     }
     default: {
       return state;

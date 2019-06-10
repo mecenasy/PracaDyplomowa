@@ -16,3 +16,15 @@ export const loginUserFail = (user: string, message: string): UserAction => ({
   message,
   type: UserActionType.LoginUserFail,
 });
+
+export const logoutUserRequest = (): UserAction => ({
+  type: UserActionType.LogoutUserRequest,
+});
+
+export const logoutUserSuccess = (): UserAction => ({
+  type: UserActionType.LogoutUserSuccess,
+});
+
+export const logoutUserFail = (): UserAction => ({
+  type: UserActionType.LogoutUserFail,
+});

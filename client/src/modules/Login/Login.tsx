@@ -2,14 +2,14 @@
 import React, { FC } from 'react';
 import Input1 from '../SimpleComponents/Input/Input';
 import * as P from './parts';
-import { Field, Form, } from 'react-final-form';
+import { Field, Form } from 'react-final-form';
 import { validateLoginForm, hasWrapperError } from './helpers';
 import { MapDispatchToProps, MapStateToProps, connect } from 'react-redux';
 import { ApplicationState } from '../../store/constants';
 import { loginUserRequest } from '../../store/User/actions';
-import {  LoginProps, LoginAction } from './types';
+import { LoginProps, LoginAction } from './types';
 
-const Login: FC<LoginProps & LoginAction> = ({
+const Login: FC<LoginProps & LoginAction > = ({
   alertMassage,
   onLogin,
 }) => {

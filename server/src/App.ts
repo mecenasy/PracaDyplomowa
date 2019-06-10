@@ -43,7 +43,7 @@ export default class App {
 
   public listen = () => {
     this.app.listen(this.port, () => {
-      console.log('Server started on port');
+      console.log('Server started on port', this.port);
     });
   }
 
