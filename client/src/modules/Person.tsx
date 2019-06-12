@@ -18,17 +18,18 @@ export interface PersonStateProps {
 }
 
 interface PersonOwnProps {
-  personId: string;
+  personId?: string;
 }
 
 interface PersonAction {
-  getPerson: () => void;
+  getPerson?: () => void;
 }
 
 type PersonProps = PersonOwnProps & PersonAction & PersonStateProps;
 
 class Person extends React.Component<PersonProps> {
   public render() {
+    console.log(this.state)
     return (
       <BoxWithShadow>
         <Photo src={this.props.photo} />
@@ -47,6 +48,6 @@ class Person extends React.Component<PersonProps> {
 }
 
 const mapStateToProps: MapStateToProps<PersonStateProps, {}, ApplicationState> =
-  (state) => (getPersonSelector(state));
+  (state) => ({ ...getPersonSelector(state) });
 
 export default connect(mapStateToProps)(Person);
