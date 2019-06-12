@@ -2,12 +2,13 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { loginUser, logoutUser } from '../../api/requests';
 import { loginUserFail, loginUserSuccess, logoutUserSuccess, logoutUserFail } from './actions';
-import { UserAction, UserActionType, User } from './constants';
+import { UserAction, UserActionType } from './constants';
 import { getPersonRequest } from '../Person/actions';
 import { getPersonWorker } from '../Person/sagas';
 
-export function* loginUserWatcher() {
+export function* userWatcher() {
   yield takeLatest<UserAction>(UserActionType.LoginUserRequest, loginUserWorker);
+  yield takeLatest<UserAction>(UserActionType.LogoutUserRequest, logoutUserWorker);
 }
 
 export function* loginUserWorker(action: UserAction) {
@@ -15,7 +16,6 @@ export function* loginUserWorker(action: UserAction) {
     const { user, password } = action;
     try {
       const data = yield call(loginUser, user, password);
-      console.log("TCL: function*loginUserWorker -> data", data)
 
       yield call(getPersonWorker, getPersonRequest(data.data.userId));
 
@@ -27,16 +27,11 @@ export function* loginUserWorker(action: UserAction) {
   }
 }
 
-export function* logoutUserWatcher() {
-  yield takeLatest<UserAction>(UserActionType.LogoutUserRequest, logoutUserWorker);
-}
-
 export function* logoutUserWorker() {
   try {
-    const { data }: { data: User } = yield call(logoutUser);
+    yield call(logoutUser);
 
     yield put(logoutUserSuccess());
-
   } catch (error) {
     yield put(logoutUserFail());
   }
