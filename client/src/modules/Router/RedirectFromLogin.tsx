@@ -6,7 +6,6 @@ import { Redirect } from 'react-router-dom';
 
 const RedirectFromLogin: FC<Pick<User, 'role'>> = (props) => {
   const { role, ...restProps } = props;
-  console.log("TCL: role", role)
   return (
     <>
       <Redirect from={'/'} to={'/login'} {...restProps} />

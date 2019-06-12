@@ -18,8 +18,8 @@ const App: FC<ReactCookieProps> = (props) => {
         <ThemeProvider theme={gridConfig} >
           <div style={{ padding: '20px' }}>
             <BrowserRouter>
-              {/* <MenuItem link={'/person'} color={'blue'} icon={'sdasdadadad'} leftBarMenu={true} />
-              <LogoutButton /> */}
+              <MenuItem link={'/admin'} color={'blue'} icon={'sdasdadadad'} leftBarMenu={true} />
+              <LogoutButton />
               <RedirectFromLogin />
               <Route path={'/login'} component={Login} />
               <AuthorizationRoute authorizedRole={['student']} path={'/student'} component={Person} >
