@@ -5,9 +5,8 @@ import { ApplicationState } from '../store/constants';
 import { getPersonSelector } from '../store/Person/selectors';
 import PersonDataRow from './PersonDataRow/PersonDataRow';
 import Photo from './Photo/Photo';
-import { withCookies, ReactCookieProps } from 'react-cookie';
 
-export interface PersonStateProps extends ReactCookieProps {
+export interface PersonStateProps {
   album: string;
   direction: string;
   department: string;
@@ -30,7 +29,6 @@ type PersonProps = PersonOwnProps & PersonAction & PersonStateProps;
 
 class Person extends React.Component<PersonProps> {
   public render() {
-    console.log(this.props.allCookies);
     return (
       <BoxWithShadow>
         <Photo src={this.props.photo} />
@@ -51,4 +49,4 @@ class Person extends React.Component<PersonProps> {
 const mapStateToProps: MapStateToProps<PersonStateProps, {}, ApplicationState> =
   (state) => (getPersonSelector(state));
 
-export default connect(mapStateToProps)(withCookies(Person));
+export default connect(mapStateToProps)(Person);

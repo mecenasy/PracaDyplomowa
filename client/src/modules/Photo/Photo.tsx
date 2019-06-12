@@ -5,11 +5,12 @@ interface PhotoProps {
   src: string;
   title?: string;
   alt?: string;
+  className?: string;
 }
 
 const Photo: FC<PhotoProps> = (props) => (
   <Border>
-    <ImageWrapper>
+    <ImageWrapper className={props.className}>
       <Image {...props} />
     </ImageWrapper>
   </Border>
