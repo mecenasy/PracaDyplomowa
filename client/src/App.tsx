@@ -10,6 +10,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import AuthorizationRoute from './modules/Router/AuthorizationRoute';
 import RedirectFromLogin from './modules/Router/RedirectFromLogin';
 import Login from './modules/Login/Login';
+import icon from './assets/001-browser.svg';
 
 const App: FC<ReactCookieProps> = (props) => {
   return (
@@ -18,7 +19,8 @@ const App: FC<ReactCookieProps> = (props) => {
         <ThemeProvider theme={gridConfig} >
           <div style={{ padding: '20px' }}>
             <BrowserRouter>
-              <MenuItem link={'/admin'} color={'blue'} icon={'sdasdadadad'} leftBarMenu={true} />
+              <MenuItem link={'/admin'} icon={icon} isSimple={false} text={'asjdgaldjagsdlajdgakdjhag'} />
+              <MenuItem link={'/admin'} icon={icon} isSimple={false} text={'asjdgaldjagsdlajdgakdjhag'} />
               <LogoutButton />
               <RedirectFromLogin />
               <Route path={'/login'} component={Login} />

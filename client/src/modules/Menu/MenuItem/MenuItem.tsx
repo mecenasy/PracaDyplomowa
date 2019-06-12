@@ -1,23 +1,28 @@
 import React, { FC } from 'react';
-import { Link , NavLink} from 'react-router-dom';
 import * as P from './parts';
-import d from '../../../assets/001-browser.svg';
 
 interface MenuItemProps {
   icon: string;
-  color: string;
+  color?: string;
   link: string;
-  leftBarMenu: boolean;
+  isSimple: boolean;
+  text: string;
 }
 
 const MenuItem: FC<MenuItemProps> = ({
   link,
+  isSimple,
+  text,
+  icon,
+  color,
 }) => (
-    <P.BoxWithShadow>
-      <Link to={link}>
-        <P.Photo src={d} />
-        adasldkas;dlkad;alkd;asldka;dlka;dlkasd;alskd
-      </Link>
+    <P.BoxWithShadow isSimple={isSimple} color={color}>
+      <P.Link to={link}>
+        <P.Photo src={icon} />
+        <P.Title>
+          {text}
+        </P.Title>
+      </P.Link>
     </P.BoxWithShadow>
   );
 
