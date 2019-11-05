@@ -27,4 +27,3 @@ export const gridConfig = {
   space: [0, 4, 8, 16, 24, 32, 48],
   breakpoints: [520, 720, 900, 1080, 999999],
 };
-

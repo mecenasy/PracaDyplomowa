@@ -13,32 +13,32 @@ import Login from './modules/Login/Login';
 import icon from './assets/001-browser.svg';
 
 const App: FC<ReactCookieProps> = (props) => {
-  return (
-    <CookiesProvider>
-      <Provider store={store}>
-        <ThemeProvider theme={gridConfig} >
-          <div style={{ padding: '20px' }}>
-            <BrowserRouter>
-              <MenuItem link={'/admin'} icon={icon} isSimple={false} text={'asjdgaldjagsdlajdgakdjhag'} />
-              <MenuItem link={'/admin'} icon={icon} isSimple={false} text={'asjdgaldjagsdlajdgakdjhag'} />
-              <LogoutButton />
-              <RedirectFromLogin />
-              <Route path={'/login'} component={Login} />
-              <AuthorizationRoute authorizedRole={['student']} path={'/student'} component={Person} >
+   return (
+      <CookiesProvider>
+         <Provider store={store}>
+            <ThemeProvider theme={gridConfig} >
+               <div style={{ padding: '20px' }}>
+                  <BrowserRouter>
+                     <MenuItem link={'/admin'} icon={icon} isSimple={false} text={'asjdgaldjagsdlajdgakdjhag'} />
+                     <MenuItem link={'/admin'} icon={icon} isSimple={false} text={'asjdgaldjagsdlajdgakdjhag'} />
+                     <LogoutButton />
+                     <RedirectFromLogin />
+                     <Route path={'/login'} component={Login} />
+                     <AuthorizationRoute authorizedRole={['student']} path={'/student'} component={Person} >
 
-              </AuthorizationRoute>
-              <AuthorizationRoute authorizedRole={['teacher']} path={'/teacher'} component={Person} >
+                     </AuthorizationRoute>
+                     <AuthorizationRoute authorizedRole={['teacher']} path={'/teacher'} component={Person} >
 
-              </AuthorizationRoute>
-              <AuthorizationRoute authorizedRole={['admin']} path={'/admin'} component={Person} >
+                     </AuthorizationRoute>
+                     <AuthorizationRoute authorizedRole={['admin']} path={'/admin'} component={Person} >
 
-              </AuthorizationRoute>
-            </BrowserRouter>
-          </div>
-        </ThemeProvider>
-      </Provider>
-    </CookiesProvider>
-  );
+                     </AuthorizationRoute>
+                  </BrowserRouter>
+               </div>
+            </ThemeProvider>
+         </Provider>
+      </CookiesProvider>
+   );
 };
 
 export default App;
